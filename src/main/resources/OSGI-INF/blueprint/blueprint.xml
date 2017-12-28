@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
-           xmlns:cxf="http://cxf.apache.org/blueprint/core"
            xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
            xmlns:cxfrs="http://camel.apache.org/schema/blueprint/cxf"
            xsi:schemaLocation="
@@ -18,8 +16,6 @@
     <bean id="swagger2Feature" class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
         <property name="basePath" value="/cxf/id239"/>
     </bean>
-
-
 
     <cxfrs:rsServer id="server" address="/id239" loggingFeatureEnabled="false">
         <cxfrs:serviceBeans>
@@ -44,6 +40,7 @@
     </bean>
 
     <bean id="requestMessageGenerator" class="edesur.pangea.cliente.ws.AsyncRequestMessageGenerator" />
+    <bean id="fileLoadingProcessor" class="edesur.pangea.cliente.ws.FileLoadingProcessor" />
 
     <camelContext xmlns="http://camel.apache.org/schema/blueprint">
         <dataFormats>
@@ -52,12 +49,20 @@
 
         <route trace="true">
             <from uri="cxfrs:bean:server?bindingStyle=SimpleConsumer" />
-            <process ref="requestMessageGenerator" />
-            <marshal ref="json-message" />
-            <log message="${body}" />
-            <to uri="file:work/contratacion/?fileName=${property.numeroOrden}.json" />
-            <to uri="activemq:queue:contratacion?exchangePattern=InOnly" />
-            <process ref="responseGenerator" />
+            <log message="The expected operation is :: ${headers.operationName}" />
+            <choice>
+                <when>
+                    <simple>${headers.operationName} == 'getFile'</simple>
+                    <process ref="fileLoadingProcessor" />
+                </when>
+                <otherwise>
+                    <process ref="requestMessageGenerator" />
+                    <marshal ref="json-message" />
+                    <to uri="file:work/contratacion/?fileName=${property.numeroOrden}.json" />
+                    <to uri="activemq:queue:contratacion?exchangePattern=InOnly" />
+                    <process ref="responseGenerator" />
+                </otherwise>
+            </choice>
         </route>
 
     </camelContext>

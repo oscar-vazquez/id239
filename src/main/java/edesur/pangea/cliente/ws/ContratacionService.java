@@ -3,16 +3,21 @@ package edesur.pangea.cliente.ws;
 import edesur.pangea.ws.SuccessAsyncResponse;
 import io.swagger.annotations.*;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/")
 @Api(value = "/", description = "Servicio de procesamiento de contratación")
 public class ContratacionService {
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Retorna contenido archivo")
+    public  Response getFile(@ApiParam(value = "Numero Orden", required = true) @PathParam("id") String id) {
+        return null;
+    }
 
     @POST
     @Path("/alta")
