@@ -1,5 +1,6 @@
 package edesur.pangea.cliente.ws;
 
+import edesur.pangea.ws.AsyncRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -8,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @ApiModel(value = "AltaContratoRequest")
-public class AltaContratoRequest extends ContratoRequest{
+public class AltaContratoRequest extends AsyncRequest {
     @Size(max = 15)
     @NotNull
     @ApiModelProperty(value = "Identificador del caso de SFDC.")

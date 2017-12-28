@@ -1,23 +1,22 @@
-package edesur.pangea.cliente.ws;
+package edesur.pangea.ws;
 
-import edesur.pangea.ws.SuccessAsyncResponse;
+import edesur.pangea.cliente.ws.AltaContratoRequest;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.Random;
 
-@SuppressWarnings("unused")
-public class RequestMessageGenerator implements Processor {
-    private static final Logger logger = LoggerFactory.getLogger(RequestMessageGenerator.class);
+// TODO: nombre property harcoded
+public class AsyncRequestMessageGenerator implements Processor {
+    private static final Logger logger = LoggerFactory.getLogger(AsyncRequestMessageGenerator.class);
 
     @Override
     public void process(Exchange exchange) {
         String action = exchange.getIn().getHeader("CamelHttpPath", String.class).substring(1).toUpperCase();
 
-        ContratoRequestMessage message = new ContratoRequestMessage();
+        AsyncRequestMessage message = new AsyncRequestMessage();
 
         String numeroOrden = generateRandom();
 

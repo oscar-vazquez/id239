@@ -43,16 +43,10 @@
         </property>
     </bean>
 
-    <bean id="requestMessageGenerator" class="edesur.pangea.cliente.ws.RequestMessageGenerator" />
+    <bean id="requestMessageGenerator" class="edesur.pangea.ws.AsyncRequestMessageGenerator" />
 
     <camelContext xmlns="http://camel.apache.org/schema/blueprint">
         <dataFormats>
-            <!--
-            <json id="json-alta" library="Jackson" prettyPrint="true" include="NON_NULL"
-                  unmarshalTypeName="edesur.pangea.cliente.ws.AltaContratoRequest" />
-            <json id="json-message" library="Jackson" prettyPrint="true" include="NON_NULL" />
-                  unmarshalTypeName="edesur.pangea.cliente.ws.AltaContratoRequestMessage" />
-                  -->
             <json id="json-message" library="Jackson" prettyPrint="true" include="NON_NULL" />
         </dataFormats>
 
