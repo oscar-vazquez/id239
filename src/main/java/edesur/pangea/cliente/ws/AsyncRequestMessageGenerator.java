@@ -1,6 +1,7 @@
-package edesur.pangea.ws;
+package edesur.pangea.cliente.ws;
 
-import edesur.pangea.cliente.ws.AltaContratoRequest;
+import edesur.pangea.ws.AsyncRequest;
+import edesur.pangea.ws.AsyncRequestMessage;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.slf4j.Logger;
@@ -22,7 +23,26 @@ public class AsyncRequestMessageGenerator implements Processor {
 
         message.setNumeroOrden(numeroOrden);
         message.setAccion(action);
-        message.setMessage(exchange.getIn().getBody(AltaContratoRequest.class));
+
+        Class clazz;
+
+        switch (action) {
+            case "ALTA":
+                clazz = AltaContratoRequest.class;
+                break;
+            case "BAJA":
+                clazz = BajaContratoRequest.class;
+                break;
+            case "CAMBIOTITULAR":
+                clazz = CambioTitularRequest.class;
+                break;
+            case "CAMBIOCONDICIONES":
+                clazz = CambioCondicionesRequest.class;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid Action " + action);
+        }
+        message.setMessage((AsyncRequest) exchange.getIn().getBody(clazz));
 
         exchange.getIn().setBody(message);
 

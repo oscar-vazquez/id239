@@ -43,7 +43,7 @@
         </property>
     </bean>
 
-    <bean id="requestMessageGenerator" class="edesur.pangea.ws.AsyncRequestMessageGenerator" />
+    <bean id="requestMessageGenerator" class="edesur.pangea.cliente.ws.AsyncRequestMessageGenerator" />
 
     <camelContext xmlns="http://camel.apache.org/schema/blueprint">
         <dataFormats>
