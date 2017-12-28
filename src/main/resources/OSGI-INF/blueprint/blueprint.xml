@@ -43,31 +43,27 @@
         </property>
     </bean>
 
-    <bean id="aa" class="edesur.pangea.cliente.ws.RequestMessageGenerator" />
+    <bean id="requestMessageGenerator" class="edesur.pangea.cliente.ws.RequestMessageGenerator" />
 
     <camelContext xmlns="http://camel.apache.org/schema/blueprint">
         <dataFormats>
+            <!--
             <json id="json-alta" library="Jackson" prettyPrint="true" include="NON_NULL"
                   unmarshalTypeName="edesur.pangea.cliente.ws.AltaContratoRequest" />
-            <json id="json-message" library="Jackson" prettyPrint="true" include="NON_NULL"
+            <json id="json-message" library="Jackson" prettyPrint="true" include="NON_NULL" />
                   unmarshalTypeName="edesur.pangea.cliente.ws.AltaContratoRequestMessage" />
+                  -->
+            <json id="json-message" library="Jackson" prettyPrint="true" include="NON_NULL" />
         </dataFormats>
 
         <route trace="true">
             <from uri="cxfrs:bean:server?bindingStyle=SimpleConsumer" />
-            <log message="Processing CXF route....http method ${header.CamelHttpMethod}" />
-            <log message="Processing CXF route....path is ${header.CamelHttpPath}" />
-            <log message="Processing CXF route....body is ${body}" />
-            <process ref="aa" />
+            <process ref="requestMessageGenerator" />
             <marshal ref="json-message" />
-            <!--
-            <marshal ref="json-alta" />
-            -->
-            <to uri="file:work/contratacion/?fileName=${date:now:yyyyMMdd@HHmmssSS}.json" />
-            <!--
-            <process ref="responseGenerator" />
+            <log message="${body}" />
+            <to uri="file:work/contratacion/?fileName=${property.numeroOrden}.json" />
             <to uri="activemq:queue:contratacion?exchangePattern=InOnly" />
-            -->
+            <process ref="responseGenerator" />
         </route>
 
     </camelContext>

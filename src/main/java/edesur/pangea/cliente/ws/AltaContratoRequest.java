@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @ApiModel(value = "AltaContratoRequest")
-public class AltaContratoRequest {
+public class AltaContratoRequest extends ContratoRequest{
     @Size(max = 15)
     @NotNull
     @ApiModelProperty(value = "Identificador del caso de SFDC.")

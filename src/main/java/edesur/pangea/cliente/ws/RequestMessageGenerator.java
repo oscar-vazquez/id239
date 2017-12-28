@@ -17,21 +17,17 @@ public class RequestMessageGenerator implements Processor {
     public void process(Exchange exchange) {
         String action = exchange.getIn().getHeader("CamelHttpPath", String.class).substring(1).toUpperCase();
 
-        ContratoRequestMessage message;
+        ContratoRequestMessage message = new ContratoRequestMessage();
 
-        switch (action) {
-            case "ALTA":
-                message = new AltaContratoRequestMessage();
-                ((AltaContratoRequestMessage)message).setMessage(exchange.getIn().getBody(AltaContratoRequest.class));
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid action " + action);
-        }
+        String numeroOrden = generateRandom();
 
-        message.setNumeroOrden((generateRandom()));
+        message.setNumeroOrden(numeroOrden);
         message.setAccion(action);
+        message.setMessage(exchange.getIn().getBody(AltaContratoRequest.class));
 
         exchange.getIn().setBody(message);
+
+        exchange.setProperty("numeroOrden", numeroOrden);
     }
 
     private String generateRandom() {

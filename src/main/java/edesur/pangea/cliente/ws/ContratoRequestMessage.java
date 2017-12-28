@@ -2,12 +2,15 @@ package edesur.pangea.cliente.ws;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public abstract class ContratoRequestMessage {
+public class ContratoRequestMessage {
     @ApiModelProperty(value = "Identificador de la solicitud generada en synergia.")
     private String numeroOrden;
 
     @ApiModelProperty
     private String accion;
+
+    @ApiModelProperty
+    private ContratoRequest message;
 
     public String getNumeroOrden() {
         return numeroOrden;
@@ -23,5 +26,13 @@ public abstract class ContratoRequestMessage {
 
     public void setAccion(String accion) {
         this.accion = accion;
+    }
+
+    public ContratoRequest getMessage() {
+        return message;
+    }
+
+    public void setMessage(ContratoRequest message) {
+        this.message = message;
     }
 }
